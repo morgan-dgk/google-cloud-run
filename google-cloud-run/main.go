@@ -16,6 +16,8 @@ import (
 	runpb "cloud.google.com/go/run/apiv2/runpb"
 	"github.com/docker/docker/pkg/namesgenerator"
 	"google.golang.org/api/option"
+
+	"dagger/google-cloud-run/internal/dagger"
 )
 
 type GoogleCloudRun struct{}
@@ -25,7 +27,7 @@ type GoogleCloudRun struct{}
 //
 // example:
 // dagger call create-service --project myproject --location us-central1 --image docker.io/nginx --http-port 80 --credential env:GOOGLE_CREDENTIAL
-func (m *GoogleCloudRun) CreateService(project string, location string, image string, httpPort int32, credential *Secret) (string, error) {
+func (m *GoogleCloudRun) CreateService(project string, location string, image string, httpPort int32, credential *dagger.Secret) (string, error) {
 	ctx := context.Background()
 	json, err := credential.Plaintext(ctx)
 	b := []byte(json)
@@ -93,7 +95,7 @@ func (m *GoogleCloudRun) CreateService(project string, location string, image st
 //
 // example:
 // dagger call update-service --project myproject --location us-central1 --service myservice --image docker.io/nginx --http-port 80 --credential env:GOOGLE_CREDENTIAL
-func (m *GoogleCloudRun) UpdateService(project string, location string, service string, image string, httpPort int32, credential *Secret) (string, error) {
+func (m *GoogleCloudRun) UpdateService(project string, location string, service string, image string, httpPort int32, credential *dagger.Secret) (string, error) {
 	ctx := context.Background()
 	json, err := credential.Plaintext(ctx)
 	b := []byte(json)
